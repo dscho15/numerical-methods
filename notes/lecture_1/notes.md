@@ -1,11 +1,13 @@
 # Lecture Notes
 
 - Read from page `1-52`
+- It requires some Latex interpreter to read the math.
+- Compile with: `pandoc test.md -o test.pdf`
 
 ---
 
 - Data types can differ in the number of bits utilized (wordlength), which differs from the fundamental respect whether it is stored in ``fixed-point`` or ``floating-point``
-- Floating point is represented by: 
+- Floating point is represented> by: 
   $$ S \times M \times b^{E-e}$$
 b is the `base` (binary: 2), e is the bias of `exponent` (fixed integer constant for a machine), S depends on the sign, M (23 for a float) and E depends upon the number (1-254 for a float).
 - All modern processers share the same floating-point representation, namely `IEEE Standard 754-1985`.
@@ -38,7 +40,7 @@ $$ A \cdot x = b$$
 
 The dot is equal to matrix multiplication and is a so called contraction operator, that represents the sum over a pair of indicies for example
 
-$$C = A \cdot B \xleftrightarrow{} c_{ik} = \sum_j a_{ij}b_{jk}$$ 
+$$C = A \cdot B \xrightarrow{} c_{ik} = \sum_j a_{ij}b_{jk}$$ 
 
 ## Nonsingular versus singular
 
@@ -69,7 +71,8 @@ A subspace $S$ is defined by the 3 rules:
 - $\vec{v}_1, \vec{v}_2 \; \epsilon \; S \xrightarrow{} \; \vec{v}_1 + \vec{v}_2 \; \epsilon \; S$ two vectors added should result in a new vector in the space.
 - $c \; \epsilon \; \mathbb{R} \; , \; \vec{v_1} \; \epsilon \; S \xrightarrow{}c\vec{v}_1 \; \epsilon \; S$ obvious linear relationship.
 
-A subspace, the `nullspace`, could be defined for $A\cdot x = b$, counterintuitively we call it the null space of A. Example say $A \; \epsilon \; \mathbb{R}^{m\times n}$ and $x \; \epsilon \; \mathbb{R}^{n\times1}$ and if m > n, then there might a null space. ``Gaussian elimination can be used to derive the nullspace``.
+A subspace, the `nullspace`, could be defined for $A\cdot x = b$, counterintuitively we call it the null space of A. 
+Example say $A \; \epsilon \; \mathbb{R}^{m\times n}$ and $x \; \epsilon \; \mathbb{R}^{n\times1}$ and if m > n, then there might a null space. ``Gaussian elimination can be used to derive the nullspace``.
 
 
 
