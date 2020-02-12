@@ -181,4 +181,200 @@ $$ x_i = \frac{1}{a_{ii}}[b_2' - \sum^{N-1}_{j=i+1}a'_{ij}x_j] $$
 
 This algorithm is faster than gaussian jordan hence we do not find the full algorithm.
 
-##
+## LU-Decomposition Method
+
+The idea is to split matrix A, which has NxN dimension to two matrices: L and U:
+
+$$ \mathbf{A} \cdot \mathbf{x} = \mathbf{b}$$
+
+L always have ones in the diagonal is a lower triangular matrix and U is a upper triangular matrix. We only use 4x4 as examples
+
+$$
+\begin{bmatrix}
+a_{0,0} & a_{0,1} & a_{0,2} & a_{0,3} \\
+a_{1,0} & a_{1,1} & a_{1,2} & a_{1,3} \\
+a_{2,0} & a_{2,1} & a_{2,2} & a_{2,3} \\
+a_{3,0} & a_{3,1} & a_{3,2} & a_{3,3}
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+L_{1,0} & 1 & 0 & 0 \\
+L_{2,0} & L_{2,1} & 1 & 0 \\
+L_{3,0} & L_{3,1} & L_{3,2} & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+U_{0,0} & U_{0,1} & U_{0,2} & U_{0,3} \\
+0 & U_{1,1} & U_{1,2} & U_{1,3} \\
+0 & 0 & U_{2,2} & U_{2,3} \\
+0 & 0 & 0 & U_{3,3}
+\end{bmatrix} 
+$$
+
+---
+
+The LU algorithm can be achieved by running through each column, followed by row using iterator *i* and for each row having two mechanisms depending on *j*. An example is shown using 3x3.
+
+---
+
+
+$$
+\begin{bmatrix}
+a_{0,0} & a_{0,1} & a_{0,2}  \\
+a_{1,0} & a_{1,1} & a_{1,2}  \\
+a_{2,0} & a_{2,1} & a_{2,2}  \\
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0 \\
+L_{1,0} & 1 & 0  \\
+L_{2,0} & L_{2,1} & 1  
+\end{bmatrix} \cdot \begin{bmatrix}
+U_{0,0} & U_{0,1} & U_{0,2}  \\
+0 & U_{1,1} & U_{1,2}  \\
+0 & 0 & U_{2,2}  \\
+\end{bmatrix} 
+$$
+
+---
+
+$$
+\begin{bmatrix}
+a_{0,0} & a_{0,1} & a_{0,2}  \\
+a_{1,0} & a_{1,1} & a_{1,2}  \\
+a_{2,0} & a_{2,1} & a_{2,2}  \\
+\end{bmatrix} = 
+\begin{bmatrix}
+U_{0,0} & \cdots &  \\
+L_{1,0}\cdot U_{0,0} & \cdots &   \\
+L_{2,0}\cdot U_{0,0} & \cdots &   
+\end{bmatrix}
+$$
+
+---
+
+This is first column iteration
+
+$$
+\begin{bmatrix}
+a_{0,0} & a_{0,1} & a_{0,2}  \\
+a_{1,0} & a_{1,1} & a_{1,2}  \\
+a_{2,0} & a_{2,1} & a_{2,2}  \\
+\end{bmatrix} = 
+\begin{bmatrix}
+U_{0,0} & U_{0,1}  & \cdots  \\
+L_{1,0}\cdot U_{0,0} & L_{1,0} \cdot U_{0,1} + U_{1,1} & \cdots  \\
+L_{2,0}\cdot U_{0,0} & L_{2,0} \cdot U_{0,1} + L_{2,1}U_{1,1} &   \cdots
+\end{bmatrix}
+$$
+
+---
+
+Now let's try to generalize this using null indexing
+
+    for j = 0,1 ... N-1
+
+      for i = 0,1 ... j
+        
+        U[i][j] = A[i][j]
+
+        for k = 0,1 ... j-1
+
+          U[i][j] -= L[i][j] * U[i][j]
+
+        end
+
+      end
+
+      for i = j+1, j+2 ... N-1
+
+        U[i][j] = A[i][j]
+
+        for k = j+1, j+1 ... N-1
+
+          U[i][j] -= L[i][j] * U[i][j]
+
+        end
+
+        U[i][j] /= U[j][j]
+
+      end
+
+    end
+
+---
+
+Where $j$ runs from $0$ ... $N-1$
+
+Where $i$ runs from $0$ ... $j$
+
+$$ U_{ij} = a_{ij} - \sum_{k=0}^{j-1} L_{i,k}U_{k,j} $$
+
+and where $i$ runs from $j+1$ ... $N$
+
+$$ L_{ij} = \frac{a_{ij} - \sum_{k=0}^{j-1} L_{i,k}U_{k,j}}{U_{j,j}} $$
+
+---
+
+This is just decomposition and to solve a set of linear equations this has to be performed firstly. Then it is possible to calculate the set of equations. This is done by first analyzing the linear equation
+
+$$ \mathbf{A} \cdot \mathbf{x} = \mathbf{b} \xrightarrow{} ( \mathbf{L} \cdot \mathbf{U})\cdot \mathbf{x} = \mathbf{b} $$
+$$ \mathbf{L} \cdot ( \mathbf{U}\cdot \mathbf{x} ) = \mathbf{b} \xrightarrow{} \mathbf{L} \cdot \mathbf{y} = \mathbf{b} $$
+$$ \mathbf{U} \cdot \mathbf{x} = \mathbf{y} $$
+
+This is a recursive method and be can done for multiple e.g. $C=L\cdot U\cdot L' \cdot U'$. So let's figure out how to solve this, and actually it is rather easy using ``forward substitution for L and backward substitution U``. This is makes it relatively easy to solve for ``y`` and afterwards ``x``. 
+
+## Forward substitution by an example
+
+$$
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+L_{1,0} & 1 & 0 & 0 \\
+L_{2,0} & L_{2,1} & 1 & 0 \\
+L_{3,0} & L_{3,1} & L_{3,2} & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+y_0 \\
+y_1 \\
+y_2 \\
+\end{bmatrix} = \begin{bmatrix}
+b_0 \\
+b_1 \\
+b_2 \\
+\end{bmatrix}
+$$
+
+$$ b_0 = y_1$$
+$$ b_1 = L_{1,0} \cdot y_0 + y_1$$
+$$ b_2 = L_{2,0} \cdot y_0 + L_{1,0} \cdot y_1 + y_2$$
+
+Now to find $\mathbf{y}$
+
+$$ y_i = b_i - \sum_{k=0}^i L_{i,k} \cdot y_k$$
+
+## Backward substitution by an example
+
+$$
+\begin{bmatrix}
+U_{0,0} & U_{0,1} & U_{0,2}  \\
+0 & U_{1,1} & U_{1,2}  \\
+0 & 0 & U_{2,2}  \\
+\end{bmatrix}  \cdot \begin{bmatrix}
+x_0 \\
+x_1 \\
+x_2 \\
+\end{bmatrix} = \begin{bmatrix}
+y_0 \\
+y_1 \\
+y_2 \\
+\end{bmatrix}
+$$
+
+$$ y_2 = U_{2,2} x_2$$
+$$ y_1 = U_{1,1} x_1 + U_{1,2} \cdot x_2 $$
+$$ y_0 = U_{0,0} x_0 + U_{0,1} x_1 + U_{0,2} \cdot x_2 $$
+
+Now to find $\mathbf{x}$, starting from the end say $N-1$
+
+$$ x_i = \frac{y_i - \sum_{k=i+1}^{N-1} U_{i,k} \cdot y_k}{U_{i,i}}$$
+
+## Why is it usefull?
+We can store the matrix A in L U after use, this has computation complexity $O(N^3)$ and for every time we want to solve a linear system we got $2*O(N^2)$.
+
+We if want to determine the determinant of A we simple multiply the product of ``U``
+
+If we want to add more system we rember that is it recursive as stated earlier.
