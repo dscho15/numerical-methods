@@ -42,7 +42,11 @@ The dot is equal to matrix multiplication and is a so called contraction operato
 
 $$C = A \cdot B \xrightarrow{} c_{ik} = \sum_j a_{ij}b_{jk}$$ 
 
+---
+
 ## Nonsingular versus singular
+
+---
 
 Even though M = N there might not be a unique solution this is called a singularity, `row degeneracy` (række degeneration, en række er en linær kombination af de andre) or `column degeneracy` (kolonne degeneration, en kolonne er en linær kombination).
 
@@ -50,7 +54,11 @@ Even though M = N there might not be a unique solution this is called a singular
   - Some equations might be close linearly depedent that roundoff errors in the machine render them depedent
   - `Accumulated roundoff errors` can swamp the true solution (if `N` is large).
 
+---
+
 ## Tasks of Computational Linear Algebra
+
+---
 - When M = N
   - Solution of matrix equation 
   - Solution of more than one matrix equation
@@ -63,7 +71,11 @@ If `M < N` or the same size, then there is effectively fewer unknowns than known
 
 If there are more equations than unknowns, M > N, there is in general no solution $x$ to equation $A \cdot x = b$.
 
+---
+
 ## What is a subspace?
+
+---
 
 A subspace $S$ is defined by the 3 rules:
 
@@ -74,7 +86,99 @@ A subspace $S$ is defined by the 3 rules:
 A subspace, the `nullspace`, could be defined for $A\cdot x = b$, counterintuitively we call it the null space of A. 
 Example say $A \; \epsilon \; \mathbb{R}^{m\times n}$ and $x \; \epsilon \; \mathbb{R}^{n\times1}$ and if m > n, then there might a null space. ``Gaussian elimination can be used to derive the nullspace``.
 
-
+---
 
 ## Gauss-Jordan elimination
 
+---
+
+- The idea is to add or subtract a linear combination of the given equation until equation contains only one of the unknowns.
+- The deficienies:
+  - It requires all the right hand sides to be stored and manipulated at the same time.
+  - It is slow, when the inverse matrix is not desired, it is `considered stable` however.
+
+The principle can be applied to multiple systems, e.g.
+
+$$ [\mathbf{A}] \cdot [\mathbf{x}_0 \; | \; \mathbf{x}_1 \; | \; \mathbf{x}_2 \; | \; Y \; ] = [\mathbf{b}_0 \; | \; \mathbf{b}_1 \; | \; \mathbf{b}_2 \; | \; I ]$$ 
+
+notice | is the column augmentation operator and just shows that it is possible to seperate the matrixes and the solve the linear sets.
+
+$$ A \cdot \mathbf{x}_0 = \mathbf{b}_0$$
+
+There is exactly 3 operations that is possible
+
+- Swapping two rows,
+- Multiplying a row by a nonzero number,
+- Adding a multiple of one row to another row.
+
+The main idea is to reach `row echoleon form`, an matrix with values equal to 0 under the diagonal. This is perfomed by taking $a_{1,1}$ and dividing every row underneath e.g. $a_{2,1} - \lambda a_{1,1} = 0$ and then continueing like this.
+
+The main reason why we want to avoid this is because of $a_{1,1}$ is 0 hence $\lambda$ would be infinite.
+
+---
+
+## Gaussian Elimination: Partial Pivot Method
+
+---
+
+Just gonna use the link for this one. Can be used on example 3x3 | 3x3 etc
+
+https://ocw.mit.edu/courses/chemical-engineering/10-34-numerical-methods-applied-to-chemical-engineering-fall-2005/lecture-notes/lecturenotes123.pdf
+
+**The main idea**
+
+
+    Find the entry in the left column with the largest absolute value. This entry is called the pivot.
+
+    a_{ij} = max_{k} | a_kj | (if all elements are 0 then we give up.)
+
+    Perform row interchange (if necessary), so that the pivot is in the first row.
+
+    Find new pivot (repeat)
+
+    ...
+
+    When finished perform back-substituion (the process of computing the unknowns from a system that is in upper-triangular form)
+
+  ``Pivoting helps reduce rounding errors; you are less likely to add/subtract with very small number (or very large) numbers``
+
+  - Why pick the largest pivot? It minimizes the round-off error.
+  - Partial pivoting is the interchanging of rows
+  - Full pivoting is the interchanging of both rows and columns in order to place a particularly "good" element in the diagonal position prior to a particular operation. 
+
+---
+
+
+## Other Methods?
+
+---
+
+Column operations corresponds to multiplying wth simple matrices called C and its inverse, they are only used for doing permutations (ændre rækkefølgen).
+
+Visual:
+
+$$ (... R_2 \cdot R_1 \cdot R_0 \cdot A ) \cdot x = (... R_2 \cdot R_1 \cdot R_0 \cdot A ) b $$
+
+``More to be added...``
+
+---
+
+# Gaussian Elimination with Backsubstitution
+
+After the upper triangular matrix is obtained from gaussian elimination, then backsubstituion is begun. 
+
+The algorithm for this is fairly straight forward
+
+$$ x_3 = b_3'/a_{33} $$
+
+Then $x_3$ is used for $x_2$
+
+$$ x_2 = \frac{1}{a_{22}} [ b_2'-x_3a_{23}']$$
+
+This proceeds, and is a recursive algorithm
+
+$$ x_i = \frac{1}{a_{ii}}[b_2' - \sum^{N-1}_{j=i+1}a'_{ij}x_j] $$
+
+This algorithm is faster than gaussian jordan hence we do not find the full algorithm.
+
+##
