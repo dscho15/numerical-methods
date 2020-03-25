@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<!-- -*- html -*- -->
+<html style="height: 100%; margin: 0px; padding: 0px;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <title>Function of Best Fit</title>
+  <link rel="shortcut icon" href="https://textbooks.math.gatech.edu/ila/demos/img/gatech.gif">
+
+  
+      <link rel="stylesheet" href="bestfit-implicit_data/demo.css">
+  
+
+  <style>
+      
+
+  #eqn-here {
+    color: var(--palette-red);
+  }
+  #sumsq-here {
+    color: var(--palette-violet);
+  }
+
+  </style>
+
+<style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}
+</style><style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}
+</style></head>
+<body style="--palette-red:#e31a1b; --palette-blue:#377db8; --palette-green:#4daf4a; --palette-violet:#984ea2; --palette-orange:#ff7e00; --palette-yellow:#b2b200; --palette-brown:#a65628; --palette-pink:#f681be; height: 100%; margin: 0px; padding: 0px; position: relative;">
+    
+
+    
+        <script src="bestfit-implicit_data/demo.js"></script>
+    
+
+    <script type="text/javascript">
+        "use strict";
+        DomReady.ready(function() {
+
+        var bestFitStr, bestfit, bvec, dot, func, funcStr, i, k, l, len, len1, letter, m, makeString, matrix, numParams, numTargets, obj, op, param, params, range, ref, ref1, ref2, size, solve, targets, units, updateCaption, vars, xhat, zeroParams;
+
+range = urlParams.get('range', 'float', 10);
+
+funcStr = (ref = urlParams.func) != null ? ref : 'C*x+D';
+
+funcStr = funcStr.replace(/\s+/g, '+');
+
+func = exprEval.Parser.parse(funcStr);
+
+for (op in func.unaryOps) {
+  if (op.match(/^[a-zA-Z]+$/)) {
+    funcStr = funcStr.replace(new RegExp(op, 'g'), "\\" + op);
+  }
+}
+
+params = [];
+
+zeroParams = {};
+
+vars = [];
+
+ref1 = func.variables().sort();
+for (k = 0, len = ref1.length; k < len; k++) {
+  letter = ref1[k];
+  if (letter === 'x' || letter === 'y') {
+    vars.push(letter);
+  } else {
+    params.push(letter);
+    zeroParams[letter] = 0;
+  }
+}
+
+size = vars.length + 1;
+
+numParams = params.length;
+
+units = [];
+
+for (i = l = 0, ref2 = numParams; 0 <= ref2 ? l < ref2 : l > ref2; i = 0 <= ref2 ? ++l : --l) {
+  obj = {};
+  for (m = 0, len1 = params.length; m < len1; m++) {
+    param = params[m];
+    obj[param] = 0;
+  }
+  obj[params[i]] = 1;
+  units.push(obj);
+}
+
+targets = [];
+
+i = 1;
+
+while (urlParams["v" + i] != null) {
+  targets.push(urlParams.get("v" + i, 'float[]'));
+  i++;
+}
+
+numTargets = targets.length;
+
+matrix = (function() {
+  var n, ref3, results;
+  results = [];
+  for (n = 0, ref3 = numParams; 0 <= ref3 ? n < ref3 : n > ref3; 0 <= ref3 ? n++ : n--) {
+    results.push((function() {
+      var o, ref4, results1;
+      results1 = [];
+      for (o = 0, ref4 = numTargets; 0 <= ref4 ? o < ref4 : o > ref4; 0 <= ref4 ? o++ : o--) {
+        results1.push(0);
+      }
+      return results1;
+    })());
+  }
+  return results;
+})();
+
+bvec = (function() {
+  var n, ref3, results;
+  results = [];
+  for (n = 0, ref3 = numTargets; 0 <= ref3 ? n < ref3 : n > ref3; 0 <= ref3 ? n++ : n--) {
+    results.push(0);
+  }
+  return results;
+})();
+
+window.xhat = xhat = (function() {
+  var n, ref3, results;
+  results = [];
+  for (n = 0, ref3 = numParams; 0 <= ref3 ? n < ref3 : n > ref3; 0 <= ref3 ? n++ : n--) {
+    results.push(0);
+  }
+  return results;
+})();
+
+bestfit = function(x) {
+  return 0;
+};
+
+bestFitStr = '';
+
+dot = function(v1, v2) {
+  var n, ref3, ret;
+  ret = 0;
+  for (i = n = 0, ref3 = v1.length; 0 <= ref3 ? n < ref3 : n > ref3; i = 0 <= ref3 ? ++n : --n) {
+    ret += v1[i] * v2[i];
+  }
+  return ret;
+};
+
+updateCaption = function() {};
+
+solve = function() {
+  var ATA, ATb, constant, eqno, j, len2, len3, linear, n, o, p, q, ref3, ref4, solver, target, toEval;
+  for (eqno = n = 0, ref3 = numTargets; 0 <= ref3 ? n < ref3 : n > ref3; eqno = 0 <= ref3 ? ++n : --n) {
+    target = targets[eqno];
+    toEval = {};
+    for (i = o = 0, len2 = vars.length; o < len2; i = ++o) {
+      letter = vars[i];
+      toEval[letter] = target[i];
+    }
+    linear = func.simplify(toEval);
+    constant = linear.evaluate(zeroParams);
+    for (i = p = 0, ref4 = numParams; 0 <= ref4 ? p < ref4 : p > ref4; i = 0 <= ref4 ? ++p : --p) {
+      matrix[i][eqno] = linear.evaluate(units[i]) - constant;
+    }
+    bvec[eqno] = target[size - 1] - constant;
+  }
+  ATA = (function() {
+    var q, ref5, results;
+    results = [];
+    for (j = q = 0, ref5 = numParams; 0 <= ref5 ? q < ref5 : q > ref5; j = 0 <= ref5 ? ++q : --q) {
+      results.push((function() {
+        var r, ref6, results1;
+        results1 = [];
+        for (i = r = 0, ref6 = numParams; 0 <= ref6 ? r < ref6 : r > ref6; i = 0 <= ref6 ? ++r : --r) {
+          results1.push(dot(matrix[i], matrix[j]));
+        }
+        return results1;
+      })());
+    }
+    return results;
+  })();
+  ATb = (function() {
+    var q, ref5, results;
+    results = [];
+    for (i = q = 0, ref5 = numParams; 0 <= ref5 ? q < ref5 : q > ref5; i = 0 <= ref5 ? ++q : --q) {
+      results.push(dot(matrix[i], bvec));
+    }
+    return results;
+  })();
+  solver = rowReduce(ATA)[3];
+  solver(ATb, xhat);
+  toEval = {};
+  for (i = q = 0, len3 = params.length; q < len3; i = ++q) {
+    letter = params[i];
+    toEval[letter] = xhat[i];
+  }
+  bestfit = func.simplify(toEval).toJSFunction(vars.join(','));
+  makeString();
+  return updateCaption();
+};
+
+makeString = function() {
+  var len2, n, results, val, valAlone, valMinus, valPlus;
+  bestFitStr = funcStr;
+  results = [];
+  for (i = n = 0, len2 = params.length; n < len2; i = ++n) {
+    letter = params[i];
+    val = xhat[i];
+    if (val >= 0) {
+      valAlone = val.toFixed(2);
+      valPlus = "+" + valAlone;
+      valMinus = "-" + valAlone;
+    }
+    if (val < 0) {
+      val = -val;
+      valAlone = val.toFixed(2);
+      valPlus = "-" + valAlone;
+      valMinus = "+" + valAlone;
+      valAlone = "-" + valAlone;
+    }
+    bestFitStr = bestFitStr.replace(new RegExp("\\+" + letter + "\\*", 'g'), valPlus + '\\,');
+    bestFitStr = bestFitStr.replace(new RegExp("\\+" + letter, 'g'), valPlus);
+    bestFitStr = bestFitStr.replace(new RegExp("-" + letter + "\\*", 'g'), valMinus + '\\,');
+    bestFitStr = bestFitStr.replace(new RegExp("-" + letter, 'g'), valMinus);
+    bestFitStr = bestFitStr.replace(new RegExp(letter + "\\*", 'g'), valAlone + '\\,');
+    bestFitStr = bestFitStr.replace(new RegExp("" + letter, 'g'), valAlone);
+    results.push(bestFitStr = bestFitStr.replace(/\*/g, ''));
+  }
+  return results;
+};
+
+solve();
+
+window.demo = new (size === 2 ? Demo2D : Demo)({}, function() {
+  var bestFitElt, clipCube, minimElt, str, varsStr, view;
+  window.mathbox = this.mathbox;
+  view = this.view({
+    axes: true,
+    grid: true,
+    viewRange: [[-range, range], [-range, range], [-range, range]].slice(0, size)
+  });
+  this.labeledPoints(view, {
+    name: 'targets',
+    points: targets,
+    colors: (function() {
+      var n, ref3, results;
+      results = [];
+      for (n = 0, ref3 = numTargets; 0 <= ref3 ? n < ref3 : n > ref3; 0 <= ref3 ? n++ : n--) {
+        results.push(new Color("blue"));
+      }
+      return results;
+    })(),
+    live: true,
+    pointOpts: {
+      zIndex: 2
+    }
+  });
+  if (size === 2) {
+    view.interval({
+      channels: 2,
+      range: [-range, range],
+      width: 100,
+      expr: function(emit, x) {
+        return emit(x, bestfit(x));
+      }
+    }).line({
+      color: new Color("red").arr(),
+      width: 4,
+      zIndex: 1
+    });
+  }
+  if (size === 3) {
+    clipCube = this.clipCube(view, {
+      draw: true
+    });
+    clipCube.clipped.area({
+      channels: 3,
+      rangeX: [-range, range],
+      rangeY: [-range, range],
+      width: 100,
+      height: 100,
+      expr: function(emit, x, y) {
+        return emit(x, y, bestfit(x, y));
+      }
+    }).surface({
+      color: new Color("red").arr(),
+      opacity: .25,
+      zIndex: 1,
+      fill: true,
+      lineX: false,
+      lineY: false
+    }).resample({
+      shader: null,
+      size: 'relative',
+      width: 1 / 10,
+      height: 1 / 10
+    }).surface({
+      color: new Color("red").arr(),
+      opacity: .6,
+      zIndex: 1,
+      zBias: 2,
+      fill: false,
+      lineX: true,
+      lineY: true
+    });
+  }
+  view.array({
+    channels: size,
+    width: 2,
+    items: numTargets,
+    expr: function(emit, end) {
+      var n, ref3, results, x, y, z;
+      results = [];
+      for (i = n = 0, ref3 = numTargets; 0 <= ref3 ? n < ref3 : n > ref3; i = 0 <= ref3 ? ++n : --n) {
+        x = targets[i][0];
+        y = targets[i][1];
+        if (size === 2) {
+          if (end) {
+            emit(x, bestfit(x));
+          } else {
+            emit(x, y);
+          }
+        }
+        if (size === 3) {
+          z = targets[i][2];
+          if (end) {
+            results.push(emit(x, y, bestfit(x, y)));
+          } else {
+            results.push(emit(x, y, z));
+          }
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    }
+  }).line({
+    color: new Color("violet").arr(),
+    width: 3,
+    zIndex: 3
+  });
+  this.draggable(view, {
+    points: targets,
+    postDrag: solve
+  });
+  str = '<p>Best-fit equation: <span id="eqn-here"></span></p>';
+  str += '<p>Quantity minimized: <span id="sumsq-here"></span></p>';
+  this.caption(str);
+  bestFitElt = document.getElementById('eqn-here');
+  minimElt = document.getElementById('sumsq-here');
+  varsStr = vars.join(',');
+  updateCaption = (function(_this) {
+    return function() {
+      var diff, len2, minimized, n, quantity, target;
+      katex.render("\\quad f(" + varsStr + ") = " + bestFitStr, bestFitElt);
+      minimized = [];
+      quantity = 0;
+      for (n = 0, len2 = targets.length; n < len2; n++) {
+        target = targets[n];
+        if (size === 2) {
+          diff = target[1] - bestfit(target[0]);
+        }
+        if (size === 3) {
+          diff = target[2] - bestfit(target[0], target[1]);
+        }
+        minimized.push((diff.toFixed(2)) + "^2");
+        quantity += diff * diff;
+      }
+      str = '\\quad' + quantity.toFixed(2) + '=' + minimized.join('+');
+      return katex.render(str, minimElt);
+    };
+  })(this);
+  return updateCaption();
+});
+
+
+        });
+    </script>
+
+
+
+<div class="mathbox-overlays"><div class="overlay-text"><p>Best-fit equation: <span id="eqn-here"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="1em"></mspace><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>4</mn><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>6</mn><mi>cos</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>3</mn><mi>sin</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>2</mn><mi>cos</mi><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>6</mn><mn>0</mn><mi>sin</mi><mo>(</mo><mn>2</mn><mi>x</mi><mo>)</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>8</mn><mi>cos</mi><mo>(</mo><mn>3</mn><mi>x</mi><mo>)</mo><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>1</mn><mi>sin</mi><mo>(</mo><mn>3</mn><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">\quad f(x) = -0.14+0.26\cos(x)-0.23\sin(x)+1.12\cos(2x)-0.60\sin(2x)-0.28\cos(3x)+0.11\sin(3x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 0.75em;"></span><span class="strut bottom" style="height: 1em; vertical-align: -0.25em;"></span><span class="base textstyle uncramped"><span class="mord mspace quad"></span><span style="margin-right: 0.10764em;" class="mord mathit">f</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mrel">=</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mord mathrm">4</span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mord mathrm">6</span><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mbin">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mord mathrm">3</span><span class="mop">sin</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathrm">1</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mord mathrm">2</span><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathrm">2</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mbin">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">6</span><span class="mord mathrm">0</span><span class="mop">sin</span><span class="mopen">(</span><span class="mord mathrm">2</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mbin">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathrm">3</span><span class="mord mathit">x</span><span class="mclose">)</span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mord mathrm">1</span><span class="mop">sin</span><span class="mopen">(</span><span class="mord mathrm">3</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span></span></p><p>Quantity minimized: <span id="sumsq-here"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mspace width="1em"></mspace><mn>2</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>8</mn><mo>=</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>7</mn><msup><mn>6</mn><mn>2</mn></msup><mo>+</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>7</mn><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><msup><mn>3</mn><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><msup><mn>8</mn><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>5</mn><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>9</mn><msup><mn>0</mn><mn>2</mn></msup><mo>+</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>1</mn><msup><mn>8</mn><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\quad2.28=-0.76^2+-0.74^2+-0.04^2+-0.03^2+0.04^2+-0.08^2+0.54^2+0.90^2+0.18^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 0.814108em;"></span><span class="strut bottom" style="height: 0.897438em; vertical-align: -0.08333em;"></span><span class="base textstyle uncramped"><span class="mord mspace quad"></span><span class="mord mathrm">2</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mord mathrm">8</span><span class="mrel">=</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">7</span><span class="mord"><span class="mord mathrm">6</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">7</span><span class="mord"><span class="mord mathrm">4</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord"><span class="mord mathrm">4</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord"><span class="mord mathrm">3</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord"><span class="mord mathrm">4</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord"><span class="mord mathrm">8</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">5</span><span class="mord"><span class="mord mathrm">4</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">9</span><span class="mord"><span class="mord mathrm">0</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mord"><span class="mord mathrm">8</span><span class="vlist"><span class="" style="top: -0.363em; margin-right: 0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle uncramped"><span class="mord mathrm">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span></span></span></p></div></div><canvas style="display: block; width: 628px; height: 500px; margin-left: 0px; margin-top: 0px; visibility: visible;" width="628" height="500"></canvas><div><div class="mathbox-loader mathbox-splash-blue mathbox-exit" style="display: none;">
+  <div class="mathbox-logo">
+    <div style="transform: rotateZ(25.4692deg) rotateX(-0.103959deg) rotateY(44.1152deg);"> <div></div><div></div><div></div> </div>
+    <div style="transform: rotateZ(14.4692deg) rotateX(-12.104deg) rotateY(29.1152deg) scale3d(0.6, 0.6, 0.6);"> <div></div><div></div><div></div> </div>
+  </div>
+  <div class="mathbox-progress"><div style="width: 100%;"></div></div>
+</div></div></body></html>

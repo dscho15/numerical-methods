@@ -57,7 +57,7 @@ template <class T>
 struct NRfdjac {
 	const Doub EPS;
 	T &func;
-	NRfdjac(T &funcc) : EPS(1.0e-8),func(funcc) {}
+	NRfdjac(T &funcc) : EPS(1.0e-8), func(funcc) {}
 	MatDoub operator() (VecDoub_I &x, VecDoub_I &fvec) {
 		Int n=x.size();
 		MatDoub df(n,n);

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!-- -*- html -*- -->
+<html style="height: 100%; margin: 0px; padding: 0px;"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+  <title>Least Squares Solutions</title>
+  <link rel="shortcut icon" href="https://textbooks.math.gatech.edu/ila/demos/img/gatech.gif">
+
+  
+      <link rel="stylesheet" href="bestfit-implicit_data/demo.css">
+  
+
+  <style>
+      
+  </style>
+
+<style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}
+</style><style type="text/css">.dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity .1s linear;-o-transition:opacity .1s linear;-moz-transition:opacity .1s linear;transition:opacity .1s linear;border:0;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button.close-top{position:relative}.dg.main .close-button.close-bottom{position:absolute}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-y:visible}.dg.a.has-save>ul.close-top{margin-top:0}.dg.a.has-save>ul.close-bottom{margin-top:27px}.dg.a.has-save>ul.closed{margin-top:0}.dg.a .save-row{top:0;z-index:1002}.dg.a .save-row.close-top{position:relative}.dg.a .save-row.close-bottom{position:fixed}.dg li{-webkit-transition:height .1s ease-out;-o-transition:height .1s ease-out;-moz-transition:height .1s ease-out;transition:height .1s ease-out;-webkit-transition:overflow .1s linear;-o-transition:overflow .1s linear;-moz-transition:overflow .1s linear;transition:overflow .1s linear}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid transparent}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li>*{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px;overflow:hidden}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%;position:relative}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:7px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .cr.color{overflow:visible}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.color{border-left:3px solid}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2FA1D6}.dg .cr.number input[type=text]{color:#2FA1D6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2FA1D6;max-width:100%}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}
+</style></head>
+<body style="--palette-red:#e31a1b; --palette-blue:#377db8; --palette-green:#4daf4a; --palette-violet:#984ea2; --palette-orange:#ff7e00; --palette-yellow:#b2b200; --palette-brown:#a65628; --palette-pink:#f681be; height: 100%; margin: 0px; padding: 0px; position: relative; cursor: move;">
+    
+
+    
+        <script src="bestfit-implicit_data/demo.js"></script>
+    
+
+    <script type="text/javascript">
+        "use strict";
+        DomReady.ready(function() {
+
+        var Emat, a, bColor, bHatColor, colBasis, labels, linComboColor, matrix, nulBasis, numVecs, projection, range, ref, ref1, ref2, rref, size, solution, solve, spanVecColor, subName, surfaceColor, texLabels, vecLabel, vector, vector1, vector2, vector3, vectors;
+
+range = urlParams.get('range', 'float', 10);
+
+vector1 = urlParams.get('v1', 'float[]', [3, 0, 0]);
+
+vector2 = urlParams.get('v2', 'float[]', [0, 3, 0]);
+
+vector3 = urlParams.get('v3', 'float[]', [3, 3, 0]);
+
+vector = urlParams.get('vec', 'float[]', [5, 5, 5]);
+
+size = vector1.length;
+
+surfaceColor = new Color("violet");
+
+spanVecColor = new Color("orange");
+
+linComboColor = new Color("green");
+
+bColor = new Color("red");
+
+bHatColor = new Color("blue");
+
+numVecs = 2;
+
+if (urlParams.v3 != null) {
+  numVecs = 3;
+} else if ((urlParams.v1 != null) && (urlParams.v2 == null)) {
+  numVecs = 1;
+}
+
+matrix = [vector1.slice(), vector2.slice(), vector3.slice()].slice(0, numVecs);
+
+rref = [vector1.slice(), vector2.slice(), vector3.slice()].slice(0, numVecs);
+
+ref = rowReduce(rref), nulBasis = ref[0], colBasis = ref[1], Emat = ref[2], solve = ref[3];
+
+if (vector1[2] == null) {
+  vector1[2] = 0;
+}
+
+if (vector2[2] == null) {
+  vector2[2] = 0;
+}
+
+if (vector3[2] == null) {
+  vector3[2] = 0;
+}
+
+vectors = [vector1, vector2, vector3].slice(0, numVecs);
+
+solution = [0, 0, 0].slice(0, numVecs);
+
+projection = [0, 0, 0];
+
+labels = urlParams.get('labels', 'str[]', ['v1', 'v2', 'v3']);
+
+labels = labels.slice(0, numVecs);
+
+texLabels = (function() {
+  var j, len, results;
+  results = [];
+  for (j = 0, len = labels.length; j < len; j++) {
+    a = labels[j];
+    results.push(a.replace(/(\D+)/, '$1_'));
+  }
+  return results;
+})();
+
+vecLabel = (ref1 = urlParams.vecLabel) != null ? ref1 : 'b';
+
+subName = (ref2 = urlParams.subname) != null ? ref2 : 'W';
+
+window.demo = new (size === 2 ? Demo2D : Demo)({}, function() {
+  var clipCube, computeOut, linCombo, matrixElt, nulSpace, str, subspace, tmpVec, updateCaptions, vectorElt, view;
+  window.mathbox = this.mathbox;
+  view = this.view({
+    axes: false,
+    grid: false,
+    viewRange: [[-range, range], [-range, range], [-range, range]].slice(0, size)
+  });
+  clipCube = this.clipCube(view, {
+    draw: true,
+    hilite: size === 3
+  });
+  view.array({
+    channels: 3,
+    width: 1,
+    live: false,
+    data: [[0, 0, 0]]
+  }).point({
+    color: "black",
+    size: 15,
+    zIndex: 3
+  });
+  subspace = this.subspace({
+    vectors: vectors,
+    live: false,
+    noPlane: size === 2,
+    color: surfaceColor,
+    lineOpts: {
+      zOrder: 0
+    },
+    surfaceOpts: {
+      zOrder: 1
+    }
+  });
+  subspace.draw(clipCube.clipped);
+  this.grid(clipCube.clipped, {
+    vectors: vectors,
+    live: false,
+    lineOpts: {
+      color: surfaceColor,
+      opacity: .35
+    }
+  });
+  this.labeledVectors(view, {
+    name: 'basis',
+    vectors: vectors,
+    colors: [spanVecColor.arr(.9), spanVecColor.arr(.9), spanVecColor.arr(.9)].slice(0, numVecs),
+    labels: labels,
+    live: false,
+    vectorOpts: {
+      zIndex: 2
+    },
+    labelOpts: {
+      zIndex: 3
+    }
+  });
+  this.labeledPoints(view, {
+    name: 'bandbhat',
+    points: [vector, projection],
+    colors: [bColor, bHatColor],
+    labels: [vecLabel, vecLabel + "_Col(A)"],
+    live: true,
+    pointOpts: {
+      zIndex: 4
+    },
+    labelOpts: {
+      zIndex: 5
+    }
+  });
+  view.array({
+    width: 2,
+    channels: 3,
+    data: [vector, projection]
+  }).line({
+    color: [0.5, 0.5, 0.5],
+    width: 3
+  });
+  linCombo = this.linearCombo(view, {
+    coeffs: solution,
+    coeffVars: [0, 1, 2],
+    vectors: vectors,
+    colors: [linComboColor, linComboColor, linComboColor],
+    lineOpts: {
+      zIndex: 3
+    }
+  });
+  tmpVec = new THREE.Vector3();
+  nulSpace = this.subspace({
+    vectors: nulBasis
+  });
+  computeOut = (function(_this) {
+    return function() {
+      var i, j, particular, ref3;
+      tmpVec.set(vector[0], vector[1], vector[2]);
+      subspace.project(tmpVec, tmpVec);
+      projection[0] = tmpVec.x;
+      projection[1] = tmpVec.y;
+      projection[2] = tmpVec.z;
+      particular = solve(projection);
+      if (particular[2] == null) {
+        particular[2] = 0;
+      }
+      if (numVecs > subspace.dim) {
+        tmpVec.set(solution[0] - particular[0], solution[1] - particular[1], solution[2] - particular[2]);
+        nulSpace.project(tmpVec, tmpVec);
+        solution[0] = tmpVec.x + particular[0];
+        if (numVecs >= 2) {
+          solution[1] = tmpVec.y + particular[1];
+        }
+        if (numVecs >= 3) {
+          solution[2] = tmpVec.z + particular[2];
+        }
+      } else {
+        for (i = j = 0, ref3 = solution.length; 0 <= ref3 ? j < ref3 : j > ref3; i = 0 <= ref3 ? ++j : --j) {
+          solution[i] = particular[i];
+        }
+      }
+      return updateCaptions();
+    };
+  })(this);
+  this.draggable(view, {
+    points: [vector],
+    postDrag: computeOut
+  });
+  str = '<p><span id="vectoreqn-here"></span></p>';
+  str += '<p><span id="matrixeqn-here"></span></p>';
+  this.caption(str);
+  vectorElt = document.getElementById('vectoreqn-here');
+  matrixElt = document.getElementById('matrixeqn-here');
+  updateCaptions = (function(_this) {
+    return function() {
+      var coeffColor, sign;
+      a = solution[0].toFixed(2);
+      coeffColor = linComboColor;
+      str = ("\\color{" + (coeffColor.str()) + "}{" + a + "}\\, ") + ("\\color{" + (spanVecColor.str()) + "}{" + texLabels[0] + "}");
+      if (numVecs >= 2) {
+        if (solution[1] < 0) {
+          sign = '';
+        } else {
+          sign = '+';
+        }
+        a = solution[1].toFixed(2);
+        str += (sign + "\\color{" + (coeffColor.str()) + "}{" + a + "}\\, ") + ("\\color{" + (spanVecColor.str()) + "}{" + texLabels[1] + "}");
+      }
+      if (numVecs >= 3) {
+        if (solution[2] < 0) {
+          sign = '';
+        } else {
+          sign = '+';
+        }
+        a = solution[2].toFixed(2);
+        str += (sign + "\\color{" + (coeffColor.str()) + "}{" + a + "}\\, ") + ("\\color{" + (spanVecColor.str()) + "}{" + texLabels[2] + "}");
+      }
+      str += "= \\color{" + (bHatColor.str()) + "}{" + vecLabel + "_{\\text{Col}(A)}}";
+      katex.render(str, vectorElt);
+      str = "A \\color{" + (coeffColor.str()) + "}{\\hat x} =";
+      str += _this.texMatrix(matrix);
+      str += _this.texVector(solution, {
+        color: coeffColor
+      });
+      str += '=';
+      str += _this.texVector(projection, {
+        color: bHatColor
+      });
+      str += "= \\color{" + (bHatColor.str()) + "}{" + vecLabel + "_{\\text{Col}(A)}}";
+      return katex.render(str, matrixElt);
+    };
+  })(this);
+  return computeOut();
+});
+
+
+        });
+    </script>
+
+
+
+<div class="mathbox-overlays"><div class="overlay-text"><p><span id="vectoreqn-here"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mstyle mathcolor="#4daf4a"><mo>−</mo><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>0</mn></mstyle><mspace width="0.16667em"></mspace><mstyle mathcolor="#ff7e00"><msub><mi>v</mi><mn>1</mn></msub></mstyle><mo>+</mo><mstyle mathcolor="#4daf4a"><mn>1</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mstyle><mspace width="0.16667em"></mspace><mstyle mathcolor="#ff7e00"><msub><mi>v</mi><mn>2</mn></msub></mstyle><mo>=</mo><mstyle mathcolor="#377db8"><msub><mi>b</mi><mrow><mtext><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">l</mi></mtext><mo>(</mo><mi>A</mi><mo>)</mo></mrow></msub></mstyle></mrow><annotation encoding="application/x-tex">\color{#4daf4a}{-1.10}\, \color{#ff7e00}{v_1}+\color{#4daf4a}{1.00}\, \color{#ff7e00}{v_2}= \color{#377db8}{b_{\text{Col}(A)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 0.69444em;"></span><span class="strut bottom" style="height: 1.04964em; vertical-align: -0.3552em;"></span><span class="base textstyle uncramped"><span class="mord" style="color: rgb(77, 175, 74);">−</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">.</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span><span class="mord mspace thinspace"></span><span class="mord"><span style="margin-right: 0.03588em; color: rgb(255, 126, 0);" class="mord mathit">v</span><span class="vlist"><span class="" style="top: 0.15em; margin-right: 0.05em; margin-left: -0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm" style="color: rgb(255, 126, 0);">1</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mbin">+</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">.</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span><span class="mord mspace thinspace"></span><span class="mord"><span style="margin-right: 0.03588em; color: rgb(255, 126, 0);" class="mord mathit">v</span><span class="vlist"><span class="" style="top: 0.15em; margin-right: 0.05em; margin-left: -0.03588em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord mathrm" style="color: rgb(255, 126, 0);">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit" style="color: rgb(55, 125, 184);">b</span><span class="vlist"><span class="" style="top: 0.1802em; margin-right: 0.05em; margin-left: 0em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="text mord scriptstyle cramped"><span class="mord mathrm" style="color: rgb(55, 125, 184);">C</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">o</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">l</span></span><span class="mopen" style="color: rgb(55, 125, 184);">(</span><span class="mord mathit" style="color: rgb(55, 125, 184);">A</span><span class="mclose" style="color: rgb(55, 125, 184);">)</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span></span></span></p><p><span id="matrixeqn-here"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi><mstyle mathcolor="#4daf4a"><mover accent="true"><mi>x</mi><mo>^</mo></mover></mstyle><mo>=</mo><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mrow><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mrow></mtd><mtd><mrow><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>0</mn></mrow></mtd></mtr><mtr><mtd><mrow><mn>1</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mrow></mtd><mtd><mrow><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mrow></mtd></mtr><mtr><mtd><mrow><mn>0</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mrow></mtd><mtd><mrow><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>0</mn></mrow></mtd></mtr></mtable><mo fence="true">]</mo></mrow><mstyle mathcolor="#4daf4a"><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mrow><mo>−</mo><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>0</mn></mrow></mtd></mtr><mtr><mtd><mrow><mn>1</mn><mi mathvariant="normal">.</mi><mn>0</mn><mn>0</mn></mrow></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mstyle><mo>=</mo><mstyle mathcolor="#377db8"><mrow><mo fence="true">[</mo><mtable><mtr><mtd><mrow><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>0</mn></mrow></mtd></mtr><mtr><mtd><mrow><mo>−</mo><mn>1</mn><mi mathvariant="normal">.</mi><mn>1</mn><mn>0</mn></mrow></mtd></mtr><mtr><mtd><mrow><mo>−</mo><mn>0</mn><mi mathvariant="normal">.</mi><mn>2</mn><mn>0</mn></mrow></mtd></mtr></mtable><mo fence="true">]</mo></mrow></mstyle><mo>=</mo><mstyle mathcolor="#377db8"><msub><mi>b</mi><mrow><mtext><mi mathvariant="normal">C</mi><mi mathvariant="normal">o</mi><mi mathvariant="normal">l</mi></mtext><mo>(</mo><mi>A</mi><mo>)</mo></mrow></msub></mstyle></mrow><annotation encoding="application/x-tex">A
+ \color{#4daf4a}{\hat x} 
+=\begin{bmatrix}0.00&amp;1.10\\1.00&amp;0.00\\0.00&amp;-0.20\end{bmatrix}\color{#4daf4a}{\begin{bmatrix}-1.10\\1.00\end{bmatrix}}=\color{#377db8}{\begin{bmatrix}1.10\\-1.10\\-0.20\end{bmatrix}}=
+ \color{#377db8}{b_{\text{Col}(A)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height: 2.05002em;"></span><span class="strut bottom" style="height: 3.60004em; vertical-align: -1.55002em;"></span><span class="base textstyle uncramped"><span class="mord mathit">A</span><span class="mord accent"><span class="vlist"><span class="" style="top: 0em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord mathit" style="color: rgb(77, 175, 74);">x</span></span><span class="" style="top: 0em; margin-left: 0.05556em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="accent-body"><span class=""><span style="color: rgb(77, 175, 74);">^</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="mrel">=</span><span class="minner textstyle uncramped"><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult"><span class="vlist"><span class="" style="top: 0.905em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎣</span></span></span><span class="" style="top: -0.89502em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎡</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-c"><span class="vlist"><span class="" style="top: -1.21em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord mathrm">0</span></span></span><span class="" style="top: -0.01em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord mathrm">0</span></span></span><span class="" style="top: 1.19em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span><span class="arraycolsep" style="width: 0.5em;"></span><span class="arraycolsep" style="width: 0.5em;"></span><span class="col-align-c"><span class="vlist"><span class="" style="top: -1.21em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm">1</span><span class="mord mathrm">.</span><span class="mord mathrm">1</span><span class="mord mathrm">0</span></span></span><span class="" style="top: -0.01em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span><span class="mord mathrm">0</span></span></span><span class="" style="top: 1.19em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord">−</span><span class="mord mathrm">0</span><span class="mord mathrm">.</span><span class="mord mathrm">2</span><span class="mord mathrm">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult"><span class="vlist"><span class="" style="top: 0.905em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎦</span></span></span><span class="" style="top: -0.89502em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎤</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span><span class="minner textstyle uncramped" style="color: rgb(77, 175, 74);"><span class="style-wrap reset-textstyle textstyle uncramped" style="top: 0em;"><span class="delimsizing size3" style="color: rgb(77, 175, 74);">[</span></span><span class="mord" style="color: rgb(77, 175, 74);"><span class="mtable"><span class="col-align-c"><span class="vlist"><span class="" style="top: -0.61em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord" style="color: rgb(77, 175, 74);">−</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">.</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span></span></span><span class="" style="top: 0.59em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm" style="color: rgb(77, 175, 74);">1</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">.</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span><span class="mord mathrm" style="color: rgb(77, 175, 74);">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span><span class="style-wrap reset-textstyle textstyle uncramped" style="top: 0em;"><span class="delimsizing size3" style="color: rgb(77, 175, 74);">]</span></span></span><span class="mrel">=</span><span class="minner textstyle uncramped" style="color: rgb(55, 125, 184);"><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult" style="color: rgb(55, 125, 184);"><span class="vlist"><span class="" style="top: 0.905em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎣</span></span></span><span class="" style="top: -0.89502em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎡</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span><span class="mord" style="color: rgb(55, 125, 184);"><span class="mtable"><span class="col-align-c"><span class="vlist"><span class="" style="top: -1.21em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord mathrm" style="color: rgb(55, 125, 184);">1</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">.</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">1</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">0</span></span></span><span class="" style="top: -0.01em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord" style="color: rgb(55, 125, 184);">−</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">1</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">.</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">1</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">0</span></span></span><span class="" style="top: 1.19em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="mord textstyle uncramped"><span class="mord" style="color: rgb(55, 125, 184);">−</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">0</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">.</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">2</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">0</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing mult" style="color: rgb(55, 125, 184);"><span class="vlist"><span class="" style="top: 0.905em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎦</span></span></span><span class="" style="top: -0.89502em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="delimsizinginner delim-size4"><span class="">⎤</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span><span class="mrel">=</span><span class="mord"><span class="mord mathit" style="color: rgb(55, 125, 184);">b</span><span class="vlist"><span class="" style="top: 0.1802em; margin-right: 0.05em; margin-left: 0em;"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span><span class="reset-textstyle scriptstyle cramped"><span class="mord scriptstyle cramped"><span class="text mord scriptstyle cramped"><span class="mord mathrm" style="color: rgb(55, 125, 184);">C</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">o</span><span class="mord mathrm" style="color: rgb(55, 125, 184);">l</span></span><span class="mopen" style="color: rgb(55, 125, 184);">(</span><span class="mord mathit" style="color: rgb(55, 125, 184);">A</span><span class="mclose" style="color: rgb(55, 125, 184);">)</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span class="" style="font-size: 0em;">​</span></span>​</span></span></span></span></span></span></span></p></div></div><canvas style="display: block; width: 675px; height: 500px; margin-left: 0px; margin-top: 0px; visibility: visible; cursor: move;" width="675" height="500"></canvas><div><div class="mathbox-loader mathbox-splash-blue mathbox-exit" style="display: none;">
+  <div class="mathbox-logo">
+    <div style="transform: rotateZ(165.273deg) rotateX(-85.0673deg) rotateY(6.5331deg);"> <div></div><div></div><div></div> </div>
+    <div style="transform: rotateZ(154.273deg) rotateX(-97.0673deg) rotateY(-8.4669deg) scale3d(0.6, 0.6, 0.6);"> <div></div><div></div><div></div> </div>
+  </div>
+  <div class="mathbox-progress"><div style="width: 100%;"></div></div>
+</div></div></body></html>

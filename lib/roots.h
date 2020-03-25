@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 template <class T>
 Bool zbrac(T &func, Doub &x1, Doub &x2)
 {
@@ -45,6 +47,7 @@ void zbrak(T &fx, const Doub x1, const Doub x2, const Int n, VecDoub_O &xb1,
 		fp=fc;
 	}
 }
+
 template <class T>
 Doub rtbis(T &func, const Doub x1, const Doub x2, const Doub xacc) {
 	const Int JMAX=50;
@@ -53,13 +56,15 @@ Doub rtbis(T &func, const Doub x1, const Doub x2, const Doub xacc) {
 	Doub fmid=func(x2);
 	if (f*fmid >= 0.0) throw("Root must be bracketed for bisection in rtbis");
 	rtb = f < 0.0 ? (dx=x2-x1,x1) : (dx=x1-x2,x2);
-	for (Int j=0;j<JMAX;j++) {
+	for (Int j=0;j<JMAX;j++) 
+	{
 		fmid=func(xmid=rtb+(dx *= 0.5));
 		if (fmid <= 0.0) rtb=xmid;
 		if (abs(dx) < xacc || fmid == 0.0) return rtb;
 	}
 	throw("Too many bisections in rtbis");
 }
+
 template <class T>
 Doub rtflsp(T &func, const Doub x1, const Doub x2, const Doub xacc) {
 	const Int MAXIT=30;
@@ -132,10 +137,12 @@ Doub zriddr(T &func, const Doub x1, const Doub x2, const Doub xacc) {
 			Doub s=sqrt(fm*fm-fl*fh);
 			if (s == 0.0) return ans;
 			Doub xnew=xm+(xm-xl)*((fl >= fh ? 1.0 : -1.0)*fm/s);
-			if (abs(xnew-ans) <= xacc) return ans;
+			if (abs(xnew-ans) <= xacc) 
+				return ans;
 			ans=xnew;
 			Doub fnew=func(ans);
-			if (fnew == 0.0) return ans;
+			if (fnew == 0.0) 
+				return ans;
 			if (SIGN(fm,fnew) != fm) {
 				xl=xm;
 				fl=fm;
@@ -148,13 +155,16 @@ Doub zriddr(T &func, const Doub x1, const Doub x2, const Doub xacc) {
 				xl=ans;
 				fl=fnew;
 			} else throw("never get here.");
-			if (abs(xh-xl) <= xacc) return ans;
+			if (abs(xh-xl) <= xacc) 
+				return ans;
 		}
 		throw("zriddr exceed maximum iterations");
 	}
 	else {
-		if (fl == 0.0) return x1;
-		if (fh == 0.0) return x2;
+		if (fl == 0.0) 
+			return x1;
+		if (fh == 0.0) 
+			return x2;
 		throw("root must be bracketed in zriddr.");
 	}
 }
