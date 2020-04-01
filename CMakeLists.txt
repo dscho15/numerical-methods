@@ -21,6 +21,7 @@ set(SOURCE5 ${DIR}/src/mandatory/main.cpp)
 set(SOURCE6 ${DIR}/src/lecture_5/main.cpp)
 set(SOURCE7 ${DIR}/src/lecture_6/main.cpp)
 set(SOURCE8 ${DIR}/src/lecture_7/main.cpp)
+set(SOURCE9 ${DIR}/src/lecture_8/main.cpp)
 
 
 add_executable(lecture1 ${SOURCE1} ${HEADER})
@@ -39,3 +40,5 @@ add_executable(lecture6 ${SOURCE7} ${HEADER})
 target_include_directories(lecture6 PRIVATE ${HEADER}) 
 add_executable(lecture7 ${SOURCE8} ${HEADER})
 target_include_directories(lecture7 PRIVATE ${HEADER}) 
+add_executable(lecture8 ${SOURCE9} ${HEADER})
+target_include_directories(lecture8 PRIVATE ${HEADER}) 
