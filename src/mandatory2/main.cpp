@@ -136,6 +136,12 @@ int main()
 {
     std::cout.precision(5);
     
+    /* 
+    / Jeg mangler følgende:
+    /   Der skal laves error estimat for Q
+    /   Der skal laves error estimat for SVD, hvor sigma = 1
+    */
+
     trapezoidal(1);
     trapezoidal(2);
     trapezoidal(3);
