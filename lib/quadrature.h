@@ -1,16 +1,16 @@
 struct Quadrature{
 	Int n;
-	virtual Doub next() = 0;
+	virtual Ldoub next() = 0;
 };
 template<class T>
 struct Trapzd : Quadrature {
-	Doub a,b,s;
+	Ldoub a,b,s;
 	T &func;
 	Trapzd() {};
-	Trapzd(T &funcc, const Doub aa, const Doub bb) :
+	Trapzd(T &funcc, const Ldoub aa, const Ldoub bb) :
 		func(funcc), a(aa), b(bb) {n=0;}
-	Doub next() {
-		Doub x,tnm,sum,del;
+	Ldoub next() {
+		Ldoub x,tnm,sum,del;
 		Int it,j;
 		n++;
 		if (n == 1) {
@@ -27,9 +27,9 @@ struct Trapzd : Quadrature {
 	}
 };
 template<class T>
-Doub qtrap(T &func, const Doub a, const Doub b, const Doub eps=1.0e-10) {
+Ldoub qtrap(T &func, const Ldoub a, const Ldoub b, const Ldoub eps=1.0e-10) {
 	const Int JMAX=20;
-	Doub s,olds=0.0;
+	Ldoub s,olds=0.0;
 	Trapzd<T> t(func,a,b);
 	for (Int j=0;j<JMAX;j++) {
 		s=t.next();
@@ -41,9 +41,9 @@ Doub qtrap(T &func, const Doub a, const Doub b, const Doub eps=1.0e-10) {
 	throw("Too many steps in routine qtrap");
 }
 template<class T>
-Doub qsimp(T &func, const Doub a, const Doub b, const Doub eps=1.0e-10) {
+Ldoub qsimp(T &func, const Ldoub a, const Ldoub b, const Ldoub eps=1.0e-10) {
 	const Int JMAX=20;
-	Doub s,st,ost=0.0,os=0.0;
+	Ldoub s,st,ost=0.0,os=0.0;
 	Trapzd<T> t(func,a,b);
 	for (Int j=0;j<JMAX;j++) {
 		st=t.next();
@@ -58,13 +58,13 @@ Doub qsimp(T &func, const Doub a, const Doub b, const Doub eps=1.0e-10) {
 }
 template <class T>
 struct Midpnt : Quadrature {
-	Doub a,b,s;
+	Ldoub a,b,s;
 	T &funk;
-	Midpnt(T &funcc, const Doub aa, const Doub bb) :
+	Midpnt(T &funcc, const Ldoub aa, const Ldoub bb) :
 		funk(funcc), a(aa), b(bb) {n=0;}
-	Doub next(){
+	Ldoub next(){
 		Int it,j;
-		Doub x,tnm,sum,del,ddel;
+		Ldoub x,tnm,sum,del,ddel;
 		n++;
 		if (n == 1) {
 			return (s=(b-a)*func(0.5*(a+b)));
@@ -85,14 +85,14 @@ struct Midpnt : Quadrature {
 			return s;
 		}
 	}
-	virtual Doub func(const Doub x) {return funk(x);}
+	virtual Ldoub func(const Ldoub x) {return funk(x);}
 };
 template <class T>
 struct Midinf : Midpnt<T>{
-	Doub func(const Doub x) {
+	Ldoub func(const Ldoub x) {
 		return Midpnt<T>::funk(1.0/x)/(x*x);
 	}
-	Midinf(T &funcc, const Doub aa, const Doub bb) :
+	Midinf(T &funcc, const Ldoub aa, const Ldoub bb) :
 		Midpnt<T>(funcc, aa, bb) {
 		Midpnt<T>::a=1.0/bb;
 		Midpnt<T>::b=1.0/aa;
@@ -100,11 +100,11 @@ struct Midinf : Midpnt<T>{
 };
 template <class T>
 struct Midsql : Midpnt<T>{
-	Doub aorig;
-	Doub func(const Doub x) {
+	Ldoub aorig;
+	Ldoub func(const Ldoub x) {
 		return 2.0*x*Midpnt<T>::funk(aorig+x*x);
 	}
-	Midsql(T &funcc, const Doub aa, const Doub bb) :
+	Midsql(T &funcc, const Ldoub aa, const Ldoub bb) :
 		Midpnt<T>(funcc, aa, bb), aorig(aa) {
 		Midpnt<T>::a=0;
 		Midpnt<T>::b=sqrt(bb-aa);
@@ -112,11 +112,11 @@ struct Midsql : Midpnt<T>{
 };
 template <class T>
 struct Midsqu : Midpnt<T>{
-	Doub borig;
-	Doub func(const Doub x) {
+	Ldoub borig;
+	Ldoub func(const Ldoub x) {
 		return 2.0*x*Midpnt<T>::funk(borig-x*x);
 	}
-	Midsqu(T &funcc, const Doub aa, const Doub bb) :
+	Midsqu(T &funcc, const Ldoub aa, const Ldoub bb) :
 		Midpnt<T>(funcc, aa, bb), borig(bb) {
 		Midpnt<T>::a=0;
 		Midpnt<T>::b=sqrt(bb-aa);
@@ -124,10 +124,10 @@ struct Midsqu : Midpnt<T>{
 };
 template <class T>
 struct Midexp : Midpnt<T>{
-	Doub func(const Doub x) {
+	Ldoub func(const Ldoub x) {
 		return Midpnt<T>::funk(-log(x))/x;
 	}
-	Midexp(T &funcc, const Doub aa, const Doub bb) :
+	Midexp(T &funcc, const Ldoub aa, const Ldoub bb) :
 		Midpnt<T>(funcc, aa, bb) {
 		Midpnt<T>::a=0.0;
 		Midpnt<T>::b=exp(-aa);

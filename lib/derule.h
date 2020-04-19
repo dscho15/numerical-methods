@@ -1,13 +1,13 @@
 template<class T>
 struct DErule : Quadrature {
-	Doub a,b,hmax,s;
+	Ldoub a,b,hmax,s;
 	T &func;
 
-	DErule(T &funcc, const Doub aa, const Doub bb, const Doub hmaxx=3.7)
+	DErule(T &funcc, const Ldoub aa, const Ldoub bb, const Ldoub hmaxx=3.7)
 		: func(funcc), a(aa), b(bb), hmax(hmaxx) {n=0;}
 
-	Doub next() {
-		Doub del,fact,q,sum,t,twoh;
+	Ldoub next() {
+		Ldoub del,fact,q,sum,t,twoh;
 		Int it,j;
 		n++;
 		if (n == 1) {
