@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/lecture14_2.dir/src/lecture_14/solution14.cpp.o  -o lecture14_2 

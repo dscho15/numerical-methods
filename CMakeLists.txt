@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
 
 include_directories(lib)
 
-set(DIR /home/daniel/Desktop/numerical-methods)
+set(DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(HEADER ${DIR}/lib)
 set(SOURCE1 ${DIR}/src/lecture_1/main.cpp)
 set(SOURCE2 ${DIR}/src/lecture_2/main.cpp)
@@ -30,6 +30,7 @@ set(SOURCE13 ${DIR}/src/lecture_12/main.cpp)
 set(SOURCE14 ${DIR}/src/lecture_13/main.cpp)
 set(SOURCE14_1 ${DIR}/src/lecture_13/solution2.cpp)
 set(SOURCE15 ${DIR}/src/lecture_14/main.cpp)
+set(SOURCE15_1 ${DIR}/src/lecture_14/solution14.cpp)
 
 
 add_executable(lecture1 ${SOURCE1} ${HEADER})
@@ -64,3 +65,5 @@ add_executable(lecture13_2 ${SOURCE14_1} ${HEADER})
 target_include_directories(lecture13_2 PRIVATE ${HEADER})
 add_executable(lecture14 ${SOURCE15} ${HEADER})
 target_include_directories(lecture14 PRIVATE ${HEADER})
+add_executable(lecture14_2 ${SOURCE15_1} ${HEADER})
+target_include_directories(lecture14_2 PRIVATE ${HEADER})
