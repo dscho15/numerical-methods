@@ -91,7 +91,8 @@ struct NRfmin {
 	}
 };
 template <class T>
-void newt(VecDoub_IO &x, Bool &check, T &vecfunc) {
+void newt(VecDoub_IO &x, Bool &check, T &vecfunc) 
+{
 	const Int MAXITS=200;
 	const Doub TOLF=1.0e-8,TOLMIN=1.0e-12,STPMX=100.0;
 	const Doub TOLX=numeric_limits<Doub>::epsilon();
