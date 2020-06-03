@@ -40,7 +40,7 @@ ctype.h
 
 ../lib/tridag.h
 
-/home/panda1/numerical-methods/src/lecture_14/main.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_14/main.cpp
 iostream
 -
 fstream
@@ -48,11 +48,11 @@ fstream
 nr3.h
 -
 ludcmp.h
-/home/panda1/numerical-methods/src/lecture_14/ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_14/ludcmp.h
 banded.h
-/home/panda1/numerical-methods/src/lecture_14/banded.h
+/home/daniel/Desktop/numerical-methods/src/lecture_14/banded.h
 tridag.h
-/home/panda1/numerical-methods/src/lecture_14/tridag.h
+/home/daniel/Desktop/numerical-methods/src/lecture_14/tridag.h
 functional
 -
 

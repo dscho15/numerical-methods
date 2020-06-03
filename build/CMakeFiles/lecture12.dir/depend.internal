@@ -4,6 +4,5 @@
 CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o
  ../lib/ludcmp.h
  ../lib/nr3.h
- ../lib/qrdcmp.h
  ../lib/tridag.h
- /home/panda1/numerical-methods/src/lecture_12/main.cpp
+ /home/daniel/Desktop/numerical-methods/src/lecture_12/main.cpp

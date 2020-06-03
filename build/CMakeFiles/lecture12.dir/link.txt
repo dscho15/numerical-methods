@@ -1,1 +1,1 @@
-/usr/bin/c++     CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o  -o lecture12 
+/usr/bin/g++-7  -g   CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o  -o lecture12 

@@ -1,1 +1,1 @@
-/usr/bin/c++     CMakeFiles/mandatory.dir/src/mandatory/main.cpp.o  -o mandatory 
+/usr/bin/g++-7  -g   CMakeFiles/mandatory.dir/src/mandatory/main.cpp.o  -o mandatory 

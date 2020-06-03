@@ -40,7 +40,7 @@ ctype.h
 
 ../lib/roots_multidim.h
 
-/home/panda1/numerical-methods/src/lecture_10/main.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_10/main.cpp
 iostream
 -
 fstream
@@ -52,9 +52,9 @@ nr3.h
 new
 -
 ludcmp.h
-/home/panda1/numerical-methods/src/lecture_10/ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_10/ludcmp.h
 qrdcmp.h
-/home/panda1/numerical-methods/src/lecture_10/qrdcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_10/qrdcmp.h
 roots_multidim.h
 -
 

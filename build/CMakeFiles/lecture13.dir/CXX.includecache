@@ -38,7 +38,7 @@ string.h
 ctype.h
 -
 
-/home/panda1/numerical-methods/src/lecture_13/main.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_13/main.cpp
 iostream
 -
 fstream
@@ -46,9 +46,9 @@ fstream
 nr3.h
 -
 ludcmp.h
-/home/panda1/numerical-methods/src/lecture_13/ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_13/ludcmp.h
 banded.h
-/home/panda1/numerical-methods/src/lecture_13/banded.h
+/home/daniel/Desktop/numerical-methods/src/lecture_13/banded.h
 fstream
 -
 

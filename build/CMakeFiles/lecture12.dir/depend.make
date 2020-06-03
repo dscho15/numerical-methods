@@ -3,7 +3,6 @@
 
 CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o: ../lib/ludcmp.h
 CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o: ../lib/nr3.h
-CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o: ../lib/qrdcmp.h
 CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o: ../lib/tridag.h
 CMakeFiles/lecture12.dir/src/lecture_12/main.cpp.o: ../src/lecture_12/main.cpp
 

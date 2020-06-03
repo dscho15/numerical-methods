@@ -48,17 +48,17 @@ iostream
 string
 -
 
-/home/panda1/numerical-methods/src/lecture_3/main.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_3/main.cpp
 iostream
 -
 nr3.h
-/home/panda1/numerical-methods/src/lecture_3/nr3.h
+/home/daniel/Desktop/numerical-methods/src/lecture_3/nr3.h
 ludcmp.h
-/home/panda1/numerical-methods/src/lecture_3/ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_3/ludcmp.h
 cholesky.h
-/home/panda1/numerical-methods/src/lecture_3/cholesky.h
+/home/daniel/Desktop/numerical-methods/src/lecture_3/cholesky.h
 utilities.h
-/home/panda1/numerical-methods/src/lecture_3/utilities.h
+/home/daniel/Desktop/numerical-methods/src/lecture_3/utilities.h
 iostream
 -
 iomanip

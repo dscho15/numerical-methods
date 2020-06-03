@@ -36,7 +36,7 @@ ctype.h
 
 ../lib/tridag.h
 
-/home/panda1/numerical-methods/src/lecture_14/solution14.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_14/solution14.cpp
 iostream
 -
 fstream
@@ -44,7 +44,7 @@ fstream
 functional
 -
 nr3.h
-/home/panda1/numerical-methods/src/lecture_14/nr3.h
+/home/daniel/Desktop/numerical-methods/src/lecture_14/nr3.h
 tridag.h
-/home/panda1/numerical-methods/src/lecture_14/tridag.h
+/home/daniel/Desktop/numerical-methods/src/lecture_14/tridag.h
 

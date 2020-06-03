@@ -92,7 +92,7 @@ Int main(Int argc, Char ** argv)
         {
             // The function that is used here is g(x)
             Doub x_i     = pde.x0 + pde.d_x * (i);
-            z[i]    = pde.g(x_i);
+            z[i]         = pde.g(x_i);
         }
 
         return z;
@@ -134,8 +134,8 @@ Int main(Int argc, Char ** argv)
         // Dynamics definitions, that is, the within values of the "pool"
         for (size_t i = 1; i < y.size() - 1; i++)
         {
-            Doub x_i = pde.x0 + pde.d_x * (i);
-            y[i] = .5*r * ( u[i-1] + u[i+1] ) + (1-r) * u[i]+ .5 * pde.d_t * ( pde.f(x_i, t_i) + pde.f(x_i, t_i - pde.d_t) ) ;
+            Doub x_i    = pde.x0 + pde.d_x * (i);
+            y[i]        = .5*r * ( u[i-1] + u[i+1] ) + (1-r) * u[i]+ .5 * pde.d_t * ( pde.f(x_i, t_i) + pde.f(x_i, t_i - pde.d_t) ) ;
         }
     };
 
@@ -144,6 +144,8 @@ Int main(Int argc, Char ** argv)
     Doub x0 = 0.0, x1 = 1.0, t0 = 0.0, t1 = 20.0, alpha = 1.0, atol = 1e-4;
     Int N = 2;
     Doub A1 = NaN, A2 = NaN, A3 = NaN, error = NaN;
+
+    file << "N" << ", " << "A[N]" << ", " << "A[N-1] - A[N]" << ", " << "Estimate of Order" << ", " << "Error " << std::endl;
 
     while( error > atol || N <= 4 )
     {
@@ -172,17 +174,21 @@ Int main(Int argc, Char ** argv)
         error = abs(A1 - A2);
 
         Doub error_1 = (N == 2) ? NaN : A2 - A1;
+        
         Doub error_2 = (N < 8) ? NaN : log2((A3 - A2) / error_1 );
+
         std::cout << "N : " << std::setw(6) << N;
         std::cout << " - "
                   << "Estimate : " << std::setw(10) << A1 << " - "
-                  << " A[i] - A[i-1] " << std::setw(12) << error;
+                  << " A[i-1] - A[i] " << std::setw(12) << error;
         std::cout << " - "
                   << " Estimate of Order: " << std::setw(10) << error_2;
         std::cout << " - "
                   << " The error: " << std::setw(10) << (error_1) / (4.0 - 1.0) << std::endl;
 
         error = (error_1) / (4.0 - 1.0);
+
+        file << N << ", " << A1 << ", " << error << ", " << error_2 << ", " << (error_1) / (4.0 - 1.0) << std::endl;
 
         N *= 2;
     }

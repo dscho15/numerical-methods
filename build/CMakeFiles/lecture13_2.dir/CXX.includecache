@@ -36,13 +36,13 @@ string.h
 ctype.h
 -
 
-/home/panda1/numerical-methods/src/lecture_13/solution2.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_13/solution2.cpp
 iostream
 -
 fstream
 -
 nr3.h
-/home/panda1/numerical-methods/src/lecture_13/nr3.h
+/home/daniel/Desktop/numerical-methods/src/lecture_13/nr3.h
 banded.h
-/home/panda1/numerical-methods/src/lecture_13/banded.h
+/home/daniel/Desktop/numerical-methods/src/lecture_13/banded.h
 

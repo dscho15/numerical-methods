@@ -36,25 +36,17 @@ string.h
 ctype.h
 -
 
-../lib/qrdcmp.h
-
 ../lib/tridag.h
 
-/home/panda1/numerical-methods/src/lecture_12/main.cpp
+/home/daniel/Desktop/numerical-methods/src/lecture_12/main.cpp
 iostream
 -
 fstream
 -
-functional
--
 nr3.h
--
-ludcmp.h
-/home/panda1/numerical-methods/src/lecture_12/ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_12/nr3.h
 tridag.h
-/home/panda1/numerical-methods/src/lecture_12/tridag.h
-qrdcmp.h
-/home/panda1/numerical-methods/src/lecture_12/qrdcmp.h
-fstream
--
+/home/daniel/Desktop/numerical-methods/src/lecture_12/tridag.h
+ludcmp.h
+/home/daniel/Desktop/numerical-methods/src/lecture_12/ludcmp.h
 

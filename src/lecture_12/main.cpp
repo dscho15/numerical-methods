@@ -1,55 +1,105 @@
 #include <iostream>
 #include <fstream>
-#include <functional>
-#include <nr3.h>
-#include "ludcmp.h"
+#include "nr3.h"
 #include "tridag.h"
-#include "qrdcmp.h"
-#include <fstream>
+#include "ludcmp.h"
 
-constexpr Doub alpha_= 0.0;
-constexpr Doub beta_ = 1.0;
-constexpr Doub a_    = 0.0;
-constexpr Doub b_    = 2.0;
+using namespace std;
 
-VecDoub func(VecDoub_I &y) 
+struct two_point_boundary_problem
 {
-    VecDoub phi(y.size());
-    Doub h = (b_-a_)/y.size();
-
-    auto lambda = [](Doub x, Doub dy, Doub y)
+    Doub F(Doub yd, Doub y, Doub x)
     {
-        return 2*x + sin( dy ) - cos(y);
+        return sin(yd) - cos(y) + 2*x ;
     };
 
-    for (size_t i = 0; i < y.size(); i++)
+    Doub F_y(Doub yd, Doub y, Doub x)
     {
-        Doub x = (b_-a_)/(y.size()+1) * (i+1); 
-        Doub dy = 0;
-        if( i == 0)
+        return sin(y);
+    };
+
+    Doub F_yd(Doub yd, Doub y, Doub x)
+    {
+        return cos(yd);
+    };
+
+    Doub jacobian(VecDoub & y)
+    {
+        // Defines
+        Int N = y.size();
+        a.resize(N);
+        b.resize(N);
+        c.resize(N);
+
+        Doub h = (x1 - x0)/((Doub)(N+1.0));
+        Doub dy = (y[1] - alpha) / (2*h);
+
+        b[0] = 2 + std::pow(h,2) * F_y(dy, y[0], x0 + h);
+        c[0] = -1 + (.5*h) * F_yd(dy, y[0], x0 + h);
+        
+        dy = (beta - y[N-2])/(2*h);
+
+        b[N-1] = 2 + std::pow(h,2) * F_y(dy, y[N-1], x1 - h);
+        a[N-1] = -1 - (.5*h) * F_yd(dy, y[N-1], x1 - h);
+
+        for (Int i = 1; i < N-1; i++)
         {
-            dy      = (y[i+1] - alpha_)/(2*h);
-            phi[i]  = y[i+1] - 2 * y[i] - std::pow(h,2) * lambda(x, dy, y[i]) + alpha_;
+            Doub x = x0 + h*(i+1);
+            dy     = (y[i+1] - y[i-1])/(2*h);
+            a[i]   = -1.0 - .5*h * F_yd(dy, y[i], x);
+            b[i]   = 2.0 + std::pow(h, 2.0) * F_y(dy, y[i],  x);  
+            c[i]   = -1.0 + .5*h * F_yd(dy, y[i], x);
         }
-        else if ( i == y.size() )
+    };
+
+    VecDoub func(VecDoub_I & y)
+    {
+        // Okay, so basically y[0] = alpha, y[1] = x, y[2] = beta,
+        // but y is not incorporating this, so basically, y a size smaller (N=2 -> N=1)
+        // so y[0] = x 
+
+        Int N = y.size();
+        VecDoub phi(N);
+        Doub h = (x1 - x0)/((Doub)(N+1.0));
+
+        if(N == 1)
         {
-            dy      = (beta_ - y[i-1])/(2*h);
-            phi[i]  = -2*y[i] + y[i-1] - std::pow(h,2) * lambda(x, dy, y[i]) + beta_;
+            Doub dy = (beta - alpha)/(2*h);
+            phi[0]  = -alpha + y[0] - beta + std::pow(h,2) * F(dy, y[0], x0 + h); 
         }
         else
         {
-            dy      = (y[i+1] - y[i-1])/(2*h);
-            phi[i]  = y[i-1] - 2 * y[i] + y[i+1] - std::pow(h,2) * lambda(x, dy, y[i]);
+            Doub dy   = (y[1]-alpha)/(2*h);
+            phi[0]    = 2*y[0] - y[1] + std::pow(h,2) * F(dy, y[0], x0 + h) - alpha;
+
+            dy        = (beta - y[N-2])/(2*h);
+            phi[N-1]  = 2*y[N-1] - y[N-2] + std::pow(h,2) * F(dy, y[N-1], x1 - h) - beta;
+
+            for (size_t i = 1; i < N-1; i++)
+            {
+                Doub x    = x0 + (i+1)*h;
+                dy        = (y[i+1] - y[i-1])/(2*h);
+                phi[i]    = 2*y[i] - y[i-1] - y[i+1] + std::pow(h,2) * F(dy, y[i], x);
+            }
         }
 
-    }
-    return phi;
-}
+        return phi;
+    };
+
+    two_point_boundary_problem(Doub x0_, Doub x1_, Doub alpha_, Doub beta_) : x0(x0_), x1(x1_), alpha(alpha_), beta(beta_) 
+    {
+
+    };
+
+    // Used for tridiag
+    VecDoub a, b, c;
+
+    Doub x0, x1, alpha, beta;
+};
 
 template <class T>
 void lnsrch(VecDoub_I &xold, const Doub fold, VecDoub_I &g, VecDoub_IO &p,
-VecDoub_O &x, Doub &f, const Doub stpmax, Bool &check, T &func) 
-{
+VecDoub_O &x, Doub &f, const Doub stpmax, Bool &check, T &func) {
 	const Doub ALF=1.0e-4, TOLX=numeric_limits<Doub>::epsilon();
 	Doub a,alam,alam2=0.0,alamin,b,disc,f2=0.0;
 	Doub rhs1,rhs2,slope=0.0,sum=0.0,temp,test,tmplam;
@@ -103,83 +153,23 @@ VecDoub_O &x, Doub &f, const Doub stpmax, Bool &check, T &func)
 	}
 }
 
-template <class T>
-struct NRfdjac {
-	const Doub EPS;
-	T &func;
-	VecDoub a;
-	VecDoub b;
-	VecDoub c;
-	NRfdjac(T &funcc) : EPS(1.0e-8), func(funcc) 
-	{}
-	void jacobian (VecDoub_I &y, VecDoub_I &fvec) 
-	{
-		Int n 		= y.size();
-        Doub zero 	= 0.0;
-		a.resize(n);
-		b.resize(n);
-		c.resize(n);
-		
-		//MatDoub df(n, n, zero);
 
-        auto ydd_yd = [](Doub y_d, Doub y, Doub x)
-        {
-            return cos(y_d);
-        };
-
-        auto ydd_y = [](Doub y_d, Doub y, Doub x)
-        {
-            return sin(y);
-        };
-
-		for (Int i = 0; i < n; i++)
-        {
-            Doub h         = (b_-a_)/(n+1);
-            Doub x         = a_+h*(i+1);
-            Doub y_d       = 0;
-
-			a[i] = 0; b[i] = 0; c[i] = 0;
-
-            if(i == 0)
-            {
-                y_d         = (y[i+1]-alpha_)/(2.0*h);
-				b[i]    = -(2.0 + std::pow(h, 2.0) * ydd_y(y_d, y[i], x));
-                c[i]    = -(-1.0 + h / 2.0 * ydd_yd(y_d, y[i], x));
-            }
-            else if(i == n-1)
-            {
-                y_d         = (beta_ - y[i-1])/( 2.0 * h  );
-				a[i]    = -(-1.0 - h / 2.0 * ydd_yd(y_d, y[i], x));
-                b[i]    = -(2.0 + std::pow(h, 2.0) * ydd_y(y_d, y[i], x));
-            }
-            else
-            {
-                y_d         = (y[i+1] - y[i-1]) / (2.0 * h);
-				a[i]   = -(-1.0 - h / 2.0 * ydd_yd(y_d, y[i], x));
-                b[i]   = -(2.0 + std::pow(h, 2.0) * ydd_y(y_d, y[i],  x));  
-                c[i]   = -(-1.0 + h / 2.0 * ydd_yd(y_d, y[i], x));
-            }
-        }
-	}
-};
-
-template <class T>
 struct NRfmin {
 	VecDoub fvec;
-	T &func;
+    two_point_boundary_problem * ode2;
 	Int n;
-	NRfmin(T &funcc) : func(funcc){}
+	NRfmin(two_point_boundary_problem * ode2_) : ode2(ode2_)
+    {}
 	Doub operator() (VecDoub_I &x) {
 		n=x.size();
 		Doub sum=0;
-		fvec=func(x);
+		fvec=ode2->func(x);
 		for (Int i=0;i<n;i++) sum += SQR(fvec[i]);
 		return 0.5*sum;
 	}
 };
 
-template <class T>
-void newt(VecDoub_IO &x, Bool &check, T &vecfunc) 
+void newt(VecDoub_IO &x, Bool &check, two_point_boundary_problem * ode2) 
 {
 	const Int MAXITS=200;
 	const Doub TOLF=1.0e-8,TOLMIN=1.0e-12,STPMX=100.0;
@@ -187,8 +177,8 @@ void newt(VecDoub_IO &x, Bool &check, T &vecfunc)
 	Int i,j,its,n=x.size();
 	Doub den,f,fold,stpmax,sum,temp,test;
 	VecDoub g(n),p(n),xold(n);
-	NRfmin<T> fmin(vecfunc);
-	NRfdjac<T> fdjac(vecfunc);
+	MatDoub fjac(n,n);
+	NRfmin fmin(ode2);
 	VecDoub &fvec=fmin.fvec;
 	f=fmin(x);
 	test=0.0;
@@ -200,30 +190,25 @@ void newt(VecDoub_IO &x, Bool &check, T &vecfunc)
 	}
 	sum=0.0;
 	for (i=0;i<n;i++) sum += SQR(x[i]);
-		stpmax=STPMX*MAX(sqrt(sum),Doub(n));
+	stpmax=STPMX*MAX(sqrt(sum),Doub(n));
 	for (its=0;its<MAXITS;its++) 
-	{
-		fdjac.jacobian(x,fvec);
-
-		for (i=0;i<n;i++) 
+    {
+        ode2->jacobian(x);
+        for (i=0;i<n;i++) 
 		{
 			sum=0.0;
-
 			if(i == 0)
-				sum += fdjac.b[i]*fvec[i] + fdjac.c[i]*fvec[i+1];
+				sum += ode2->b[i]*fvec[i] + ode2->c[i]*fvec[i+1];
 			else if( i == n-1)
-				sum += fdjac.b[i]*fvec[i] + fdjac.a[i]*fvec[i-1];
+				sum += ode2->b[i]*fvec[i] + ode2->a[i]*fvec[i-1];
 			else
-				sum += fdjac.a[i]*fvec[i-1] + fdjac.b[i]*fvec[i] + fdjac.c[i]*fvec[i+1];
-
+				sum += ode2->a[i]*fvec[i-1] + ode2->b[i]*fvec[i] + ode2->c[i]*fvec[i+1];
 			g[i]=sum;
 		}
-
 		for (i=0;i<n;i++) xold[i]=x[i];
 		fold=f;
 		for (i=0;i<n;i++) p[i] = -fvec[i];
-
-		tridag(fdjac.a, fdjac.b, fdjac.c, p, p);
+        tridag(ode2->a, ode2->b, ode2->c, p, p);
 		lnsrch(xold,fold,g,p,x,f,stpmax,check,fmin);
 		test=0.0;
 		for (i=0;i<n;i++)
@@ -253,105 +238,87 @@ void newt(VecDoub_IO &x, Bool &check, T &vecfunc)
 	throw("MAXITS exceeded in newt");
 }
 
-Doub richardson_extrapolation(Doub N, Doub A_h3, Doub A_h2, Doub A_h1)
+std::ostream& operator<<(std::ostream& os, const VecDoub& x)
 {
-	auto order = round(log2((A_h1 - A_h2) / (A_h2 - A_h3)));
-    std::cout << "N: " << setw(10) << N << " - A: " << setw(15) << A_h3 << " - A(last)-A(new): " << setw(15) 
-    << A_h2 - A_h3 << " - Rich-alpha^k: " << setw(15)<< order << " - Error Estimate: " << setw(15) << ( A_h2 - A_h1 ) / (std::pow(2,order) - 1) << std::endl;
-	return ( A_h2 - A_h1 ) / (std::pow(2,order) - 1);
-};
-
-void relax()
-{
-	// Init 1
-    VecDoub_IO y(3);
-
-    for (size_t i = 0; i < y.size(); i++) y[i] = alpha_ + (beta_ - alpha_)/(y.size()+1) * (i+1);
-
-	// Init 2
-	int n = 2;
-	VecDoub y_save_1 = y;
-	VecDoub y_save_2 = y;
-	ofstream log;
-	log.open("lec12_file.csv");
-	Int least_nb_of_runs = 0;
-
-	while(true)
-	{
-		// Run Newtons Method, should compare with y_new_1 after
-		Bool chk = false;
-    	newt(y, chk, func);
-
-		// Compare with y_new_1
-		auto k = richardson_extrapolation(y.size(), y[(y.size()-1)/2], y_save_1[(y_save_1.size()-1)/2], y_save_2[(y_save_2.size()-1)/2]);
-
-		Doub h = (b_-a_)/(y.size()+1);
-		for (size_t i = 0; i < y.size(); i++)
-		{
-			Doub x = a_ + h*(i+1);
-			log << x << ", " << y[i] << "\n";
-		}
-
-		/*
-		* M = readmatrix("lec12_file.csv")
-	    * plot(M(:,1),M(:,2),'*')
-		*/
-
-		least_nb_of_runs = least_nb_of_runs + 1;
-
-		// Be careful with tuning this error constant
-		const Doub epsilon = 1e-4;
-		if ( least_nb_of_runs++ > 2 && k < epsilon) break;
-
-		y_save_2 = y_save_1;
-		y_save_1 = y;
-
-		// Interpolate for next Run
-		VecDoub temp;
-		
-		// Setup for interpolation
-		n *= 2;
-		temp.resize( n + y.size() );
-
-		for (size_t i = 0; i < y.size(); i++)
-		{
-			if ( i == 0)
-			{
-				temp[i		 ]  = 1.0 / 2.0 * ( y[i] + alpha_);
-				temp[i+1	 ]  = y[i];
-			}
-			else if ( i == ( y.size() - 1 ) )
-			{
-				temp[2*i    ] 	= 1.0 / 2.0 * ( y[i] + beta_);
-			}
-			else
-			{
-				temp[2*i 	 ]  = 1.0 / 2.0 *( y[i-1] + y[i] );
-				temp[2*i + 1]	= y[i];
-			}
-		}
-
-		// Overwrite last value
-		y = temp;
-	}
-
-	log.close();
+    os << "Vector:" << "\n";
+    for (size_t i = 0; i < x.size(); i++)
+    {
+        os << x[i] << ", ";
+    }
+    return os << "\n";
 }
 
 Int main(Int argc, Char ** argv)
 {
 
-    VecDoub x(2);
+    Int N = 2;
+    Doub x0 = 0, x1 = 2, alpha = 0, beta = 1;
+    Doub A3 = NaN, A2 = NaN, A1 = NaN, error = NaN, error_1 = NaN, error_2 = NaN, atol = 1e-4;
+    std::fstream file("lecture12.csv", ios::out);
+    file << "N" << ", " << "A[N]" << ", " << "A[N-1] - A[N]" << ", " << "Estimate of Order" << ", " << "Error " << std::endl;
 
-    VecDoub y0(2);
-    y0[0] = 0;
-    y0[1] = 1;
+    VecDoub x(N-1);
 
-    VecDoub x0(2);
-    x0[0] = 0;
-    x0[1] = 2;
+    // Initial guess....
+    for (size_t i = 0; i < x.size(); i++)
+    {
+        x[i] = alpha + i*(beta-alpha)/(x.size());
+    }
 
-    relax();
+    while( error > atol || N <= 8 )
+    {
+        
+        two_point_boundary_problem ode2(x0, x1, alpha, beta);
+        bool check;
 
+        for (size_t i = 0; i < x.size(); i++)
+        {
+            x[i] = alpha + i*(beta-alpha)/(x.size());
+        }
+
+        newt(x, check, &ode2);
+
+        A3 = A2;
+        A2 = A1;
+        A1 = x[x.size()/2.0];
+
+        error = abs(A1 - A2);
+
+        Doub error_1 = (N == 2) ? NaN : A2 - A1;
+        Doub error_2 = (N < 8) ? NaN : log2((A3 - A2) / error_1 );
+        std::cout << "N : " << std::setw(6) << N;
+        std::cout << " - "
+                  << "Estimate : " << std::setw(10) << A1 << " - "
+                  << " A[i-1] - A[i] " << std::setw(12) << error;
+        std::cout << " - "
+                  << " Estimate of Order: " << std::setw(10) << error_2;
+        std::cout << " - "
+                  << " The error: " << std::setw(10) << (error_1) / (4.0 - 1.0) << std::endl;
+        error = abs((error_1) / (4.0 - 1.0));
+
+        file << N << ", " << A1 << ", " << error << ", " << error_2 << ", " << (error_1) / (4.0 - 1.0) << std::endl;
+
+        VecDoub x_cpy = x;
+        N *= 2;
+        x.resize(N-1);
+        
+        Doub itp = (x_cpy[0] - alpha)/2.0;
+        x[0] = itp;
+        itp = (x_cpy[x_cpy.size()-1] - beta)/2.0;
+        x[N-2] = itp;
+
+        for (size_t i = 1; i < N-2; i++)
+        {
+            if ( (i % 2) == 1)
+            {
+                x[i] = x_cpy[i/2.0];
+            }
+            else
+            {
+                itp = x_cpy[(i+1)/2.0] - x[i-1];
+                x[i] = itp;
+            }
+        }
+    }
 }
 

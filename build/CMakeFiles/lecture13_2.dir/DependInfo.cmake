@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/panda1/numerical-methods/src/lecture_13/solution2.cpp" "/home/panda1/numerical-methods/build/CMakeFiles/lecture13_2.dir/src/lecture_13/solution2.cpp.o"
+  "/home/daniel/Desktop/numerical-methods/src/lecture_13/solution2.cpp" "/home/daniel/Desktop/numerical-methods/build/CMakeFiles/lecture13_2.dir/src/lecture_13/solution2.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
